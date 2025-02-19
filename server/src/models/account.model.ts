@@ -1,6 +1,4 @@
-import type { Document } from "mongoose";
-
-import mongoose, { Schema } from "mongoose";
+import mongoose, { type Document, Schema } from "mongoose";
 
 import { ProviderEnum, type ProviderEnumType } from "@/enums/account-provider.enum";
 
