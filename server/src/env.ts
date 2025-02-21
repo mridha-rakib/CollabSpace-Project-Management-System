@@ -14,6 +14,7 @@ const env = createEnv({
     BASE_PATH: z.string().default("/api/v1"),
     LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
   },
+  // eslint-disable-next-line node/no-process-env
   runtimeEnv: process.env,
 });
 
