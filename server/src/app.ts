@@ -4,11 +4,15 @@ import express, {
   type Application,
 } from "express";
 import { Buffer } from "node:buffer";
+import passport from "passport";
+
+import "./config/passport.config";
 
 import { pinoLogger } from "@/middlewares/pino-logger";
 
 import env from "./env";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
+import rootRoutes from "./routes/index.route";
 
 const app: Application = express();
 
@@ -24,8 +28,12 @@ app.use(session({
   sameSite: "lax",
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(cookieParser());
 app.use(pinoLogger());
+app.use(env.BASE_PATH, rootRoutes);
 app.use((req, _res, next) => {
   console.error(`Content-Length: ${req.headers["content-length"]}`);
   console.error(
