@@ -1,26 +1,29 @@
 import type { ErrorRequestHandler, Response } from "express";
-import { z, ZodError } from "zod";
+import type { z } from "zod";
+
+import { ZodError } from "zod";
+
 import { HTTPSTATUS } from "../config/http.config";
 import { ErrorCodeEnum } from "../enums/error-code.enum";
 import { AppError } from "../utils/appError";
 
-const formatZodError = (res: Response, error: z.ZodError) => {
-  const errors = error?.issues?.map((err) => ({
+function formatZodError(res: Response, error: z.ZodError) {
+  const errors = error?.issues?.map(err => ({
     field: err.path.join("."),
     message: err.message,
   }));
   return res.status(HTTPSTATUS.BAD_REQUEST).json({
     message: "Validation failed",
-    errors: errors,
+    errors,
     errorCode: ErrorCodeEnum.VALIDATION_ERROR,
   });
-};
+}
 
 export const errorHandler: ErrorRequestHandler = (
   error,
   req,
   res,
-  next
+  _next,
 ): any => {
   console.error(`Error Occured on PATH: ${req.path} `, error);
 

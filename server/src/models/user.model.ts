@@ -1,8 +1,20 @@
 import mongoose, { Schema } from "mongoose";
 
-import type { UserDocument } from "@/ts/interfaces/user.interface";
-
 import { compareValue, hashValue } from "@/utils/bcrypt";
+
+export interface UserDocument extends Document {
+  name: string;
+  email: string;
+  password?: string;
+  profilePicture: string | null;
+  isActive: boolean;
+  lastLogin: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  currentWorkspace: mongoose.Types.ObjectId | null;
+  comparePassword: (value: string) => Promise<boolean>;
+  omitPassword: () => Omit<UserDocument, "password">;
+}
 
 const userSchema = new Schema<UserDocument>(
   {
@@ -56,5 +68,3 @@ userSchema.methods.comparePassword = async function (value: string) {
 
 const UserModel = mongoose.model<UserDocument>("User", userSchema);
 export default UserModel;
-
-

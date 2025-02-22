@@ -11,10 +11,12 @@ const env = createEnv({
       .default("development"),
     PORT: z.coerce.number().default(8000),
     SESSION_SECRET: z.string(),
-    BASE_PATH: z.string().default("/api/v1"),
+    BASE_PATH: z.string().default("/api"),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
     GOOGLE_CALLBACK_URL: z.string(),
+    FRONTEND_GOOGLE_CALLBACK_URL: z.string(),
+    FRONTEND_ORIGIN: z.string(),
     LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
   },
   // eslint-disable-next-line node/no-process-env
