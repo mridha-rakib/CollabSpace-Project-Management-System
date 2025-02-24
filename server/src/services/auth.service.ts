@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 import { ProviderEnum } from "@/enums/account-provider.enum";
 import { Roles } from "@/enums/role.enum";
+import { logger } from "@/middlewares/pino-logger";
 import AccountModel from "@/models/account.model";
 import MemberModel from "@/models/member.model";
 import RoleModel from "@/models/roles-permission.model";
@@ -139,7 +140,7 @@ export async function registerUserService(body: { email: string; name: string; p
 
     await session.commitTransaction();
     session.endSession();
-    console.log("End Session...");
+    logger.warn("End Session...");
 
     return {
       userId: user._id,
