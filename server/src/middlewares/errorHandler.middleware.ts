@@ -6,6 +6,7 @@ import { ZodError } from "zod";
 import { HTTPSTATUS } from "../config/http.config";
 import { ErrorCodeEnum } from "../enums/error-code.enum";
 import { AppError } from "../utils/appError";
+import { logger } from "./pino-logger";
 
 function formatZodError(res: Response, error: z.ZodError) {
   const errors = error?.issues?.map(err => ({
@@ -25,7 +26,7 @@ export const errorHandler: ErrorRequestHandler = (
   res,
   _next,
 ): any => {
-  console.error(`Error Occured on PATH: ${req.path} `, error);
+  logger.error(`Error Occurred on PATH: ${req.path} `, error);
 
   if (error instanceof SyntaxError) {
     return res.status(HTTPSTATUS.BAD_REQUEST).json({
@@ -44,8 +45,8 @@ export const errorHandler: ErrorRequestHandler = (
     });
   }
 
-  return res.status(HTTPSTATUS.INTERNAL_SERVER_ERROR).json({
+  res.status(HTTPSTATUS.INTERNAL_SERVER_ERROR).json({
     message: "Internal Server Error",
-    error: error?.message || "Unknow error occurred",
+    error: error?.message || "Unknown error occurred",
   });
 };

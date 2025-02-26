@@ -50,3 +50,7 @@ export async function createWorkspaceService(userId: string, body: {
     workspace,
   };
 }
+
+export async function getAllWorkspacesUserIsMemberService(_userId: string) {
+
+}

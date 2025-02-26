@@ -21,8 +21,7 @@ passport.use(
     async (req: Request, accessToken, refreshToken, profile, done) => {
       try {
         const { email, sub: googleId, picture } = profile._json;
-        console.error(profile, "profile");
-        console.error(googleId, "googleId");
+
         if (!googleId) {
           throw new NotFoundException("Google ID (sub) is missing");
         }
@@ -44,7 +43,7 @@ passport.use(
 );
 
 passport.use(
-  new LocalStrategy(
+  new LocalStrategy (
     {
       usernameField: "email",
       passwordField: "password",
@@ -53,7 +52,6 @@ passport.use(
     async (email, password, done) => {
       try {
         const user = await verifyUserService({ email, password });
-        console.error(user);
         return done(null, user);
       }
       catch (error: any) {
@@ -64,4 +62,4 @@ passport.use(
 );
 
 passport.serializeUser((user: any, done) => done(null, user));
-passport.deserializeUser((user: any, done) => done(null, user));
+passport.deserializeUser(async (user: any, done) => done(null, user));
