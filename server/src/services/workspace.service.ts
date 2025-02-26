@@ -1,8 +1,10 @@
 import type mongoose from "mongoose";
 
 import { Roles } from "@/enums/role.enum";
+import { TaskStatusEnum } from "@/enums/task.enum";
 import MemberModel from "@/models/member.model";
 import RoleModel from "@/models/roles-permission.model";
+import TaskModel from "@/models/task.model";
 import UserModel from "@/models/user.model";
 import WorkspaceModel from "@/models/workspace.model";
 import { NotFoundException } from "@/utils/appError";
@@ -51,6 +53,70 @@ export async function createWorkspaceService(userId: string, body: {
   };
 }
 
-export async function getAllWorkspacesUserIsMemberService(_userId: string) {
+export async function getAllWorkspacesUserIsMemberService(userId: string) {
+  const memberships = await MemberModel.find({ userId })
+    .populate("workspaceId")
+    .select("-password")
+    .exec();
 
+  const workspaces = memberships.map(membership => membership.workspaceId);
+
+  return { workspaces };
 }
+
+export async function getWorkspaceMembersService(workspaceId: string) {
+  const members = await MemberModel.find({ workspaceId }).populate("userId", "name email profilePicture -password").populate("role", "name");
+
+  const roles = await RoleModel.find({}, { name: 1, _id: 1 }).select("-permission").lean();
+
+  return { members, roles };
+}
+
+export async function getWorkspaceByIdService(workspaceId: string) {
+  const workspace = await WorkspaceModel.findById(workspaceId);
+
+  if (!workspace) {
+    throw new NotFoundException("Workspace not found");
+  }
+
+  const members = await MemberModel.find({
+    workspaceId,
+  }).populate("role");
+
+  const workspaceWithMembers = {
+    ...workspace.toObject(),
+    members,
+  };
+
+  return {
+    workspace: workspaceWithMembers,
+  };
+}
+
+export async function getWorkspaceAnalyticsService(workspaceId: string) {
+  const currentDate = new Date();
+
+  const totalTasks = await TaskModel.countDocuments({
+    workspace: workspaceId,
+  });
+
+  const overdueTasks = await TaskModel.countDocuments({
+    workspace: workspaceId,
+    dueDate: { $lt: currentDate },
+    status: { $ne: TaskStatusEnum.DONE },
+  });
+
+  const completedTasks = await TaskModel.countDocuments({
+    workspace: workspaceId,
+    status: TaskStatusEnum.DONE,
+  });
+
+  const analytics = {
+    totalTasks,
+    overdueTasks,
+    completedTasks,
+  };
+
+  return { analytics };
+}
+

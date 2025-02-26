@@ -3,6 +3,7 @@ import passport from "passport";
 
 import { googleLoginCallback, loginController, logOutController, registerUserController } from "@/controllers/auth.controller";
 import env from "@/env";
+import isAuthenticated from "@/middlewares/isAuthenticated.middleware";
 
 const failedUrl = `${env.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure`;
 
@@ -12,7 +13,7 @@ authRoutes.post("/register", registerUserController);
 
 authRoutes.post("/login", loginController);
 
-authRoutes.post("/logout", logOutController);
+authRoutes.post("/logout", isAuthenticated, logOutController);
 
 authRoutes.get("/google", passport.authenticate("google", {
   scope: ["profile", "email"],
