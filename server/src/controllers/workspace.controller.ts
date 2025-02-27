@@ -4,7 +4,7 @@ import { HTTPSTATUS } from "@/config/http.config";
 import { Permissions } from "@/enums/role.enum";
 import { asyncHandler } from "@/middlewares/asyncHandler.middleware";
 import { getMemberRoleInWorkspace } from "@/services/member.service";
-import { changeMemberRoleService, createWorkspaceService, getAllWorkspacesUserIsMemberService, getWorkspaceAnalyticsService, getWorkspaceByIdService, getWorkspaceMembersService, updateWorkspaceByIdService } from "@/services/workspace.service";
+import { changeMemberRoleService, createWorkspaceService, deleteWorkspaceService, getAllWorkspacesUserIsMemberService, getWorkspaceAnalyticsService, getWorkspaceByIdService, getWorkspaceMembersService, updateWorkspaceByIdService } from "@/services/workspace.service";
 import { roleGuard } from "@/utils/roleGuard";
 import { changeRoleSchema, createWorkspaceSchema, updateWorkspaceSchema, workspaceIdSchema } from "@/validation/workspace.validation";
 
@@ -118,5 +118,24 @@ export const updateWorkspaceByIdController = asyncHandler(async (req: Request, r
   return res.status(HTTPSTATUS.OK).json({
     message: "Workspace updated successfully",
     workspace,
+  });
+});
+
+export const deleteWorkspaceByIdController = asyncHandler(async (req: Request, res: Response) => {
+  const workspaceId = workspaceIdSchema.parse(req.params.id);
+
+  const userId = req.user?._id;
+
+  const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+  roleGuard(role, [Permissions.DELETE_WORKSPACE]);
+
+  const { currentWorkspace } = await deleteWorkspaceService(
+    workspaceId,
+    userId,
+  );
+
+  return res.status(HTTPSTATUS.OK).json({
+    message: "Workspace deleted successfully",
+    currentWorkspace,
   });
 });
