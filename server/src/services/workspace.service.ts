@@ -148,3 +148,18 @@ export async function changeMemberRoleService(workspaceId: string, memberId: str
     member,
   };
 }
+
+export async function updateWorkspaceByIdService(workspaceId: string, name: string, description?: string) {
+  const workspace = await WorkspaceModel.findById(workspaceId);
+  if (!workspace) {
+    throw new NotFoundException("Workspace not found");
+  }
+
+  workspace.name = name || workspace.name;
+  workspace.description = description || workspace.description;
+  await workspace.save();
+
+  return {
+    workspace,
+  };
+}
