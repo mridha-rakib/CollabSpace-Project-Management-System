@@ -21,7 +21,7 @@ export const dueDateSchema = z
   .optional()
   .refine(
     (val) => {
-      return !val || !isNaN(Date.parse(val));
+      return !val || !Number.isNaN(Date.parse(val));
     },
     {
       message: "Invalid date format. Please provide a valid date string.",
@@ -31,6 +31,15 @@ export const dueDateSchema = z
 export const taskIdSchema = z.string().trim().min(1);
 
 export const createTaskSchema = z.object({
+  title: titleSchema,
+  description: descriptionSchema,
+  priority: prioritySchema,
+  status: statusSchema,
+  assignedTo: assignedToSchema,
+  dueDate: dueDateSchema,
+});
+
+export const updateTaskSchema = z.object({
   title: titleSchema,
   description: descriptionSchema,
   priority: prioritySchema,
