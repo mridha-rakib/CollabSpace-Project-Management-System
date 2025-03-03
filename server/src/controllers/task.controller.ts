@@ -4,7 +4,7 @@ import { HTTPSTATUS } from "@/config/http.config";
 import { Permissions } from "@/enums/role.enum";
 import { asyncHandler } from "@/middlewares/asyncHandler.middleware";
 import { getMemberRoleInWorkspace } from "@/services/member.service";
-import { createTaskService, getAllTasksService, updateTaskService } from "@/services/task.service";
+import { createTaskService, deleteTaskService, getAllTasksService, getTaskByIdService, updateTaskService } from "@/services/task.service";
 import { roleGuard } from "@/utils/roleGuard";
 import { projectIdSchema } from "@/validation/project.validation";
 import { createTaskSchema, taskIdSchema, updateTaskSchema } from "@/validation/task.validation";
@@ -99,9 +99,39 @@ export const getAllTasksController = asyncHandler(async (req: Request, res: Resp
 });
 
 export const getTaskByIdController = asyncHandler(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const userId = req.user?._id;
+
+    const taskId = taskIdSchema.parse(req.params.id);
+    const projectId = projectIdSchema.parse(req.params.projectId);
+    const workspaceId = workspaceIdSchema.parse(req.params.workspaceId);
+
+    const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+    roleGuard(role, [Permissions.VIEW_ONLY]);
+
+    const task = await getTaskByIdService(workspaceId, projectId, taskId);
+
+    return res.status(HTTPSTATUS.OK).json({
+      message: "Task fetched successfully",
+      task,
+    });
+  },
 );
 
 export const deleteTaskController = asyncHandler(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const userId = req.user?._id;
+
+    const taskId = taskIdSchema.parse(req.params.id);
+    const workspaceId = workspaceIdSchema.parse(req.params.workspaceId);
+
+    const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+    roleGuard(role, [Permissions.DELETE_TASK]);
+
+    await deleteTaskService(workspaceId, taskId);
+
+    return res.status(HTTPSTATUS.OK).json({
+      message: "Task deleted successfully",
+    });
+  },
 );
