@@ -23,12 +23,11 @@ export async function loginOrCreateAccountService(data: {
 
   try {
     session.startTransaction();
-    console.log("Started Session...");
+    logger.info("Started Session...");
 
     let user = await UserModel.findOne({ email }).session(session);
 
     if (!user) {
-      // Create a new user if it doesn't exist
       user = new UserModel({
         email,
         name: displayName,
@@ -71,7 +70,7 @@ export async function loginOrCreateAccountService(data: {
     }
     await session.commitTransaction();
     session.endSession();
-    console.log("End Session...");
+    logger.info("End Session...");
 
     return { user };
   }

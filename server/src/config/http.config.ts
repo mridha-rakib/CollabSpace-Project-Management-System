@@ -1,4 +1,5 @@
-const httpConfig = () => ({
+function httpConfig() {
+  return {
     // Success responses
     OK: 200,
     CREATED: 201,
@@ -13,16 +14,16 @@ const httpConfig = () => ({
     CONFLICT: 409,
     UNPROCESSABLE_ENTITY: 422,
     TOO_MANY_REQUESTS: 429,
-  
+
     // Server error responses
     INTERNAL_SERVER_ERROR: 500,
     NOT_IMPLEMENTED: 501,
     BAD_GATEWAY: 502,
     SERVICE_UNAVAILABLE: 503,
     GATEWAY_TIMEOUT: 504,
-  });
-  
-  export const HTTPSTATUS = httpConfig();
-  
-  export type HttpStatusCodeType = (typeof HTTPSTATUS)[keyof typeof HTTPSTATUS];
-  
+  };
+}
+
+export const HTTPSTATUS = httpConfig();
+
+export type HttpStatusCodeType = (typeof HTTPSTATUS)[keyof typeof HTTPSTATUS];

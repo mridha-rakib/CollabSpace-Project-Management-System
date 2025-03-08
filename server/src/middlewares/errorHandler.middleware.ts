@@ -3,9 +3,10 @@ import type { z } from "zod";
 
 import { ZodError } from "zod";
 
-import { HTTPSTATUS } from "../config/http.config";
-import { ErrorCodeEnum } from "../enums/error-code.enum";
-import { AppError } from "../utils/appError";
+import { HTTPSTATUS } from "@/config/http.config";
+import { ErrorCodeEnum } from "@/enums/error-code.enum";
+import { AppError } from "@/utils/appError";
+
 import { logger } from "./pino-logger";
 
 function formatZodError(res: Response, error: z.ZodError) {
