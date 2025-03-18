@@ -1,3 +1,3 @@
-import config from "@collabspace-web-app/eslint-config";
+import config from "@acs-dubai/eslint-config";
 
 export default config;

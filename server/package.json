@@ -2,7 +2,7 @@
   "name": "@collabspace/server",
   "type": "module",
   "version": "1.0.0",
-  "author": "TechLyft",
+  "author": "Rakib Mahmud Mrida",
   "license": "ISC",
   "exports": {
     "./routes": "./src/routes/index.route.ts",
@@ -13,8 +13,8 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "seed": "tsx  --env-file=../.env src/seeders/role.seeder.ts",
-    "dev": "tsx watch --env-file=../.env src/index.ts",
+    "seed": "env-cmd -f .env tsx src/seeders/role.seeder.ts",
+    "dev": "env-cmd -f .env tsx watch src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "start": "bun ./dist/index.js",
@@ -50,8 +50,10 @@
     "zod": "^3.24.2",
     "zod-validation-error": "^3.4.0"
   },
+  "peerDependencies": {
+    "typescript": "^5.7.3"
+  },
   "devDependencies": {
-    "@collabspace-web-app/eslint-config": "workspace:*",
     "@types/bcrypt": "^5.0.2",
     "@types/bun": "^1.2.2",
     "@types/compression": "^1.7.5",
@@ -60,13 +62,24 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/mongoose": "^5.11.97",
+    "@types/node": "^22.13.2",
     "@types/passport": "^1.0.17",
     "@types/passport-google-oauth20": "^2.0.16",
     "@types/passport-local": "^1.0.38",
     "@types/response-time": "^2.3.8",
+    "@types/swagger-ui-express": "^4.1.7",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
     "globals": "^15.15.0",
     "pino-pretty": "^13.0.0",
+    "prettier": "^3.5.0",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.3"
   }
