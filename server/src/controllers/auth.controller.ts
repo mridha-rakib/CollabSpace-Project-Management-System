@@ -14,17 +14,13 @@ export const googleLoginCallback = asyncHandler(
     logger.info(req.user);
 
     const currentWorkspace = req.user?.currentWorkspace;
- 
+
     if (!currentWorkspace) {
-      return res.redirect(
-        `${env.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure`,
-      );
+      return res.redirect(`${env.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure`);
     }
 
-    return res.redirect(
-      `${env.FRONTEND_ORIGIN}/workspace/${currentWorkspace}`,
-    );
-  },
+    return res.redirect(`${env.FRONTEND_ORIGIN}/workspace/${currentWorkspace}`);
+  }
 );
 
 export const registerUserController = asyncHandler(
@@ -32,13 +28,13 @@ export const registerUserController = asyncHandler(
     const body = registerSchema.parse({
       ...req.body,
     });
-
+    console.log("Back: ", req.body);
     await registerUserService(body);
 
     return res.status(HTTPSTATUS.CREATED).json({
       message: "User created successfully",
     });
-  },
+  }
 );
 
 export const loginController = asyncHandler(
@@ -48,7 +44,7 @@ export const loginController = asyncHandler(
       (
         err: Error | null,
         user: Express.User | false,
-        info: { message: string } | undefined,
+        info: { message: string } | undefined
       ) => {
         if (err) {
           return next(err);
@@ -71,22 +67,26 @@ export const loginController = asyncHandler(
             user,
           });
         });
-      },
+      }
     )(req, res, next);
-  },
+  }
 );
 
-export const logOutController = asyncHandler(async (req: Request, res: Response) => {
-  req.logOut((err) => {
-    if (err) {
-      logger.error("Logout error: ", err);
+export const logOutController = asyncHandler(
+  async (req: Request, res: Response) => {
+    req.logOut((err) => {
+      if (err) {
+        logger.error("Logout error: ", err);
 
-      return res.status(HTTPSTATUS.INTERNAL_SERVER_ERROR).json({ error: "Failed log out" });
-    }
-  });
+        return res
+          .status(HTTPSTATUS.INTERNAL_SERVER_ERROR)
+          .json({ error: "Failed log out" });
+      }
+    });
 
-  req.session = null;
-  return res
-    .status(HTTPSTATUS.OK)
-    .json({ message: "Logged out successfully" });
-});
+    req.session = null;
+    return res
+      .status(HTTPSTATUS.OK)
+      .json({ message: "Logged out successfully" });
+  }
+);
