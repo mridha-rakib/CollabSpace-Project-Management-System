@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { authenticationRoutePaths } from "./common/routes";
 import NotFound from "@/page/errors/NotFound";
 import BaseLayout from "@/layout/base.layout";
+import ProtectedRoute from "./protected.route";
 
 export default function AppRoutes() {
   return (
@@ -15,6 +16,9 @@ export default function AppRoutes() {
           ))}
         </Route>
         {/* </Route> */}
+        <Route path="/" element={<ProtectedRoute />}>
+          
+        </Route>
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<NotFound />} />
       </Routes>
