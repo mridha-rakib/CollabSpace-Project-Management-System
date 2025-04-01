@@ -38,6 +38,32 @@ export type CurrentUserResponseType = {
   user: UserType;
 };
 
+//******** */ PROJECT TYPES ****************
+//****************************************** */
+export type ProjectType = {
+  _id: string;
+  name: string;
+  emoji: string;
+  description: string;
+  workspace: string;
+  createdBy: {
+    _id: string;
+    name: string;
+    profilePicture: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PaginationType = {
+  totalCount: number;
+  pageSize: number;
+  pageNumber: number;
+  totalPages: number;
+  skip: number;
+  limit: number;
+};
+
 //******** */ WORLSPACE TYPES ****************
 export type WorkspaceType = {
   _id: string;
@@ -108,4 +134,28 @@ export type AnalyticsResponseType = {
 export type RoleType = {
   _id: string;
   name: string;
+};
+
+export type AllWorkspaceResponseType = {
+  message: string;
+  workspaces: WorkspaceType[];
+};
+
+export type ProjectByIdPayloadType = {
+  workspaceId: string;
+  projectId: string;
+};
+
+export type AllProjectPayloadType = {
+  workspaceId: string;
+  pageNumber?: number;
+  pageSize?: number;
+  keyword?: string;
+  skip?: boolean;
+};
+
+export type AllProjectResponseType = {
+  message: string;
+  projects: ProjectType[];
+  pagination: PaginationType;
 };

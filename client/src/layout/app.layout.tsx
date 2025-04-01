@@ -6,6 +6,7 @@ const AppLayout = () => {
   return (
     <AuthProvider>
       <SidebarProvider>
+        <Asidebar />
         <Outlet />
       </SidebarProvider>
     </AuthProvider>
