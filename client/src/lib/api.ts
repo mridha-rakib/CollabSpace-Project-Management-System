@@ -3,10 +3,14 @@ import {
   AllProjectPayloadType,
   AllProjectResponseType,
   AllWorkspaceResponseType,
+  CreateProjectPayloadType,
+  CreateWorkspaceResponseType,
+  CreateWorkspaceType,
   CurrentUserResponseType,
   LoginResponseType,
   loginType,
   ProjectByIdPayloadType,
+  ProjectResponseType,
   registerType,
 } from "@/types/api.type";
 import API from "./axios-client";
@@ -40,6 +44,15 @@ export const getAllWorkspacesUserIsMemberQueryFn =
     return response.data;
   };
 
+//********* WORKSPACE ****************
+//************* */
+export const createWorkspaceMutationFn = async (
+  data: CreateWorkspaceType
+): Promise<CreateWorkspaceResponseType> => {
+  const response = await API.post(`/workspace/create/new`, data);
+  return response.data;
+};
+
 export const deleteProjectMutationFn = async ({
   workspaceId,
   projectId,
@@ -57,6 +70,20 @@ export const getProjectsInWorkspaceQueryFn = async ({
 }: AllProjectPayloadType): Promise<AllProjectResponseType> => {
   const response = await API.get(
     `/project/workspace/${workspaceId}/all?pageSize=${pageSize}&pageNumber=${pageNumber}`
+  );
+  return response.data;
+};
+
+//********* */
+//********* PROJECTS
+
+export const createProjectMutationFn = async ({
+  workspaceId,
+  data,
+}: CreateProjectPayloadType): Promise<ProjectResponseType> => {
+  const response = await API.post(
+    `/project/workspace/${workspaceId}/create`,
+    data
   );
   return response.data;
 };

@@ -159,3 +159,22 @@ export type AllProjectResponseType = {
   projects: ProjectType[];
   pagination: PaginationType;
 };
+
+export type CreateWorkspaceResponseType = {
+  message: string;
+  workspace: WorkspaceType;
+};
+
+export type CreateProjectPayloadType = {
+  workspaceId: string;
+  data: {
+    emoji: string;
+    name: string;
+    description: string;
+  };
+};
+
+export type ProjectResponseType = {
+  message: "Project created successfully";
+  project: ProjectType;
+};

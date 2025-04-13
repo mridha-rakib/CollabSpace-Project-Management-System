@@ -17,6 +17,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../logo";
 import { Separator } from "../ui/separator";
+import { NavProjects } from "./nav-projects";
+import { WorkspaceSwitcher } from "./workspace-switcher";
 
 const Asidebar = () => {
   const { isLoading, user } = useAuthContext();
@@ -44,7 +46,7 @@ const Asidebar = () => {
         <SidebarContent className=" !mt-0 dark:bg-background">
           <SidebarGroup className="!py-0">
             <SidebarGroupContent>
-              WorkspaceSwitcher
+              <WorkspaceSwitcher />
               <Separator />
               <NavProjects />
             </SidebarGroupContent>
