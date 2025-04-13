@@ -12,12 +12,12 @@
   },
   "main": "src/index.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "node init && tsc",
     "seed": "env-cmd -f .env tsx src/seeders/role.seeder.ts",
-    "dev": "env-cmd -f .env tsx watch src/index.ts",
+    "dev": "node init && env-cmd -f .env tsx watch src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "start": "bun ./dist/index.js",
+    "start": "node init && bun ./dist/index.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -11,6 +11,7 @@ type AuthContextType = {
   user?: UserType;
   workspace?: WorkspaceType;
   hasPermission: (permission: PermissionType) => boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any;
   isLoading: boolean;
   isFetching: boolean;
