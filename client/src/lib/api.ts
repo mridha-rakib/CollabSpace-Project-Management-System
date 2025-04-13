@@ -44,6 +44,8 @@ export const getAllWorkspacesUserIsMemberQueryFn =
     return response.data;
   };
 
+export const logoutMutationFn = async () => await API.post("/auth/logout");
+
 //********* WORKSPACE ****************
 //************* */
 export const createWorkspaceMutationFn = async (
